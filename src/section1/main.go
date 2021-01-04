@@ -10,8 +10,11 @@ import (
 
 const pi = 3.141592653
 
+/*
+课程1
+@see https://tour.go-zh.org/basics/1
+*/
 func main() {
-	//课程1 @see https://tour.go-zh.org/basics/1
 	//glog使用
 	flag.Parse()
 	glog.Info("This is the first log from ")
