@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math"
+	"runtime"
+	"time"
 )
 
 /*
@@ -18,7 +20,20 @@ func main() {
 	fmt.Printf("max(3,4) by ifMatchBetween %v\n", max(3, 4))
 	fmt.Printf("if pow(2, 3) exceed 5 then return 5: %v \n", ifPowerExceedReturn(2, 3, 5))
 	fmt.Printf("if pow(2, 3) exceed 9 then return 9: %v \n", ifPowerExceedReturn(2, 3, 9))
-
+	//牛顿法开根号
+	sqrt(4)
+	//switch case
+	printSystemName(runtime.GOOS)
+	//switch case float
+	fmt.Printf("switchCaseFloat %v: %v\n", 1.0, switchCaseFloat(1.0))
+	fmt.Printf("switchCaseFloat %v: %v\n", 2.0, switchCaseFloat(2.0))
+	fmt.Printf("switchCaseFloat %v: %v\n", 11.0, switchCaseFloat(11.0))
+	//switch no condition
+	switchCaseNoCondition(time.Now())
+	//defer
+	deferOuter()
+	//defer loop
+	deferLoop()
 }
 
 //正常的循环
@@ -77,4 +92,67 @@ func ifPowerExceedReturn(x, n, lim float64) float64 {
 	} else {
 		return v
 	}
+}
+
+//使用题目中的公式 z -= (z * z - x)/(2*z)，使得z逐渐接近于跟好根号x
+func sqrt(x float64) {
+	i := 0
+	z := x / 2
+	for z < x && i < 10 {
+		fmt.Printf("sqrtForNumberGreatThanOne temp %v - %v\n", i, z)
+		i++
+		z -= (z*z - x) / (2 * z)
+	}
+	fmt.Printf("sqrtForNumberGreatThanOne result %v - %v\n", i, z)
+}
+
+//switch case string
+func printSystemName(os string) {
+	switch os {
+	case "darwin":
+		fmt.Printf("Your system is: %v\n", "OS X")
+	case "linux":
+		fmt.Printf("Your system is: %v\n", "Linux")
+	default:
+		fmt.Printf("Your system is: %v\n", os)
+	}
+}
+
+//switch case float64
+func switchCaseFloat(x float64) int {
+	switch x {
+	case 1.0:
+		return 1
+	case 2.0:
+		return 2
+	case 3.0:
+		return 3
+	default:
+		return int(math.Floor(x))
+	}
+}
+
+//switch no condition
+func switchCaseNoCondition(t time.Time) {
+	switch {
+	case t.Hour() < 12:
+		fmt.Printf("Good morning.\n")
+	case t.Hour() < 17:
+		fmt.Printf("Good afternoon.\n")
+	default:
+		fmt.Printf("Good evening.\n")
+	}
+}
+func deferOuter() {
+	defer deferInner()
+	fmt.Printf("deferOuter run\n")
+}
+func deferInner() {
+	fmt.Printf("deferInner run\n")
+}
+func deferLoop() {
+	for i := 0; i < 10; i++ {
+		defer fmt.Printf("defer loop: %v\n", i)
+	}
+	fmt.Printf("done.\n")
 }
